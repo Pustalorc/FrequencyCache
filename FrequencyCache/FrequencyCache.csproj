@@ -12,6 +12,9 @@
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
     <RepositoryType>github</RepositoryType>
+    <PackageProjectUrl>https://github.com/Pustalorc/FrequencyCache</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/Pustalorc/FrequencyCache</RepositoryUrl>
+    <PackageTags>cache frequency replacement access</PackageTags>
   </PropertyGroup>
 
 </Project>
