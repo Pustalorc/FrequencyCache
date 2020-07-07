@@ -11,13 +11,14 @@
     <Description>A cache SDK that utilizes access frequency to determine which previous items to replace within the cache.</Description>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
-    <RepositoryType>github</RepositoryType>
+    <RepositoryType>Github</RepositoryType>
     <PackageProjectUrl>https://github.com/Pustalorc/FrequencyCache</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Pustalorc/FrequencyCache</RepositoryUrl>
     <PackageTags>cache frequency replacement access</PackageTags>
-    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2020 Pustalorc</Copyright>
-    <PackageReleaseNotes>First release.</PackageReleaseNotes>
+    <PackageReleaseNotes>Fixes an issue causing AccessCount to be increased when updating the element in cache and when the cache update is requested.</PackageReleaseNotes>
+    <Version>1.0.1</Version>
   </PropertyGroup>
 
 </Project>
