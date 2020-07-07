@@ -1,4 +1,4 @@
-namespace Pustalorc.Libraries.FrequencyCache
+namespace Pustalorc.Libraries.FrequencyCache.Interfaces
 {
     /// <summary>
     /// Represents an Identifiable element with a unique identifier defined as a string.

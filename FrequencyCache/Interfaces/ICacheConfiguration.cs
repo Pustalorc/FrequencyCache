@@ -1,4 +1,4 @@
-namespace Pustalorc.Libraries.FrequencyCache
+namespace Pustalorc.Libraries.FrequencyCache.Interfaces
 {
     /// <summary>
     /// The basic structure for a class to configure the cache.
@@ -9,7 +9,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// The minimum time in milliseconds between each cache refresh request.
         /// </summary>
         double CacheRefreshRequestInterval { get; }
-        
+
         /// <summary>
         /// The maximum amount of elements the cache should hold.
         /// </summary>
