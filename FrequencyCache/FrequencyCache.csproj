@@ -8,13 +8,16 @@
     <PackageId>Pustalorc.FrequencyCache</PackageId>
     <Authors>Pustalorc</Authors>
     <Product>Pustalorc.FrequencyCache</Product>
-    <Description>A cache SDK that utilizes access frequency to determine which previous items to replace</Description>
+    <Description>A cache SDK that utilizes access frequency to determine which previous items to replace within the cache.</Description>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
     <RepositoryType>github</RepositoryType>
     <PackageProjectUrl>https://github.com/Pustalorc/FrequencyCache</PackageProjectUrl>
     <RepositoryUrl>https://github.com/Pustalorc/FrequencyCache</RepositoryUrl>
     <PackageTags>cache frequency replacement access</PackageTags>
+    <PackageLicenseExpression>GPL-3.0-or-later</PackageLicenseExpression>
+    <Copyright>Copyright © 2020 Pustalorc</Copyright>
+    <PackageReleaseNotes>First release.</PackageReleaseNotes>
   </PropertyGroup>
 
 </Project>
