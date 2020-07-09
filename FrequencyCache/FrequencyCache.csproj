@@ -17,8 +17,8 @@
     <PackageTags>cache frequency replacement access</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2020 Pustalorc</Copyright>
-    <PackageReleaseNotes>Fixes an issue causing AccessCount to be increased when updating the element in cache and when the cache update is requested.</PackageReleaseNotes>
-    <Version>1.0.1</Version>
+    <PackageReleaseNotes>Fixes an issue with the cache instantly throwing an exception due to a missing null check.</PackageReleaseNotes>
+    <Version>1.0.2</Version>
   </PropertyGroup>
 
 </Project>

@@ -41,7 +41,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         public CachedItem GetItemInCache(IIdentifiable identifiable)
         {
             return m_CachedItems.FirstOrDefault(k =>
-                k.Identity.Equals(identifiable.UniqueIdentifier, StringComparison.OrdinalIgnoreCase));
+                k?.Identity.Equals(identifiable.UniqueIdentifier, StringComparison.OrdinalIgnoreCase) == true);
         }
 
         /// <summary>
