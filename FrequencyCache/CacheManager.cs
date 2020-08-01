@@ -8,12 +8,12 @@ namespace Pustalorc.Libraries.FrequencyCache
     /// <summary>
     /// The main system that caches and sends update requests.
     /// </summary>
-    public sealed class CacheManager
+    public sealed class CacheManager<T> where T : IIdentifiable
     {
-        private readonly CachedItem[] m_CachedItems;
+        private readonly CachedItem<T>[] m_CachedItems;
         private readonly Timer m_RequestUpdates;
 
-        public delegate void UpdateCacheItem(CachedItem item, IIdentifiable identifiable);
+        public delegate void UpdateCacheItem(CachedItem<T> item, ref T identifiable);
 
         /// <summary>
         /// Event raised whenever an element in cache is requested to be updated.
@@ -26,7 +26,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// <param name="configuration">The configuration to be used on the manager.</param>
         public CacheManager(ICacheConfiguration configuration)
         {
-            m_CachedItems = new CachedItem[configuration.CacheSize];
+            m_CachedItems = new CachedItem<T>[configuration.CacheSize];
 
             m_RequestUpdates = new Timer(configuration.CacheRefreshRequestInterval);
             m_RequestUpdates.Elapsed += RequestCacheRefresh;
@@ -38,7 +38,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// </summary>
         /// <param name="identifiable">The identifiable to match to.</param>
         /// <returns></returns>
-        public CachedItem GetItemInCache(IIdentifiable identifiable)
+        public CachedItem<T> GetItemInCache(T identifiable)
         {
             return m_CachedItems.FirstOrDefault(k =>
                 k?.Identity.Equals(identifiable.UniqueIdentifier, StringComparison.OrdinalIgnoreCase) == true);
@@ -48,7 +48,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// Stores a new identifiable on an available index, or if it is found in cache, it updates it without modifying the access count.
         /// </summary>
         /// <param name="identifiable">The identifiable to store or update in cache.</param>
-        public void StoreUpdateItem(IIdentifiable identifiable)
+        public void StoreUpdateItem(T identifiable)
         {
             if (m_CachedItems.Length == 0) return;
 
@@ -56,7 +56,7 @@ namespace Pustalorc.Libraries.FrequencyCache
             if (cache != null)
                 cache.ModifiableIdentifiable = identifiable;
             else
-                m_CachedItems[GetBestCacheIndex()] = new CachedItem(identifiable);
+                m_CachedItems[GetBestCacheIndex()] = new CachedItem<T>(identifiable);
         }
 
         /// <summary>
@@ -93,7 +93,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         private void RequestCacheRefresh(object sender, ElapsedEventArgs e)
         {
             foreach (var element in m_CachedItems)
-                OnCachedItemUpdateRequested?.Invoke(element, element.ModifiableIdentifiable);
+                OnCachedItemUpdateRequested?.Invoke(element, ref element.ModifiableIdentifiable);
         }
     }
 }

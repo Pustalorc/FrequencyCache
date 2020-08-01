@@ -8,7 +8,7 @@
     <PackageId>Pustalorc.FrequencyCache</PackageId>
     <Authors>Pustalorc</Authors>
     <Product>Pustalorc.FrequencyCache</Product>
-    <Description>A cache SDK that utilizes access frequency to determine which previous items to replace within the cache.</Description>
+    <Description>A cache SDK that utilizes access frequency &amp; creation date to determine which previous items to replace within the cache.</Description>
     <NeutralLanguage>en</NeutralLanguage>
     <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
     <RepositoryType>Github</RepositoryType>
@@ -17,8 +17,8 @@
     <PackageTags>cache frequency replacement access</PackageTags>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <Copyright>Copyright © 2020 Pustalorc</Copyright>
-    <PackageReleaseNotes>Fixes an issue with the cache instantly throwing an exception due to a missing null check.</PackageReleaseNotes>
-    <Version>1.0.2</Version>
+    <PackageReleaseNotes>Modifies the cache to support specific type caches with generics in mind. IIdentifiable can be used still as the cache type, which allows all types.</PackageReleaseNotes>
+    <Version>1.1.0</Version>
   </PropertyGroup>
 
 </Project>

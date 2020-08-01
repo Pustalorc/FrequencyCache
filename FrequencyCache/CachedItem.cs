@@ -6,19 +6,19 @@ namespace Pustalorc.Libraries.FrequencyCache
     /// <summary>
     /// An element that has been cached into memory.
     /// </summary>
-    public sealed class CachedItem
+    public sealed class CachedItem<T> where T : IIdentifiable
     {
         /// <summary>
         /// Internal identifiable element, to be used only for bypassing the access counter.
         /// </summary>
-        internal IIdentifiable ModifiableIdentifiable;
+        internal T ModifiableIdentifiable;
 
         /// <summary>
         /// Accesses the cached element, and increases access count, last access time and average time between accesses.
         /// For best practice, temporarily store the identifiable in a local variable if accessed more than once in a
         /// single method.
         /// </summary>
-        public IIdentifiable Identifiable
+        public T Identifiable
         {
             get
             {
@@ -80,7 +80,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// Creates a new cached item that stores an identifiable.
         /// </summary>
         /// <param name="identifiable">The identifiable to be stored.</param>
-        public CachedItem(IIdentifiable identifiable)
+        public CachedItem(T identifiable)
         {
             Identifiable = identifiable;
             Created = DateTime.Now;
