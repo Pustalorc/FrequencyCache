@@ -1,0 +1,38 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFrameworks>net40;net461;net48;net5.0;netstandard2.0;netstandard2.1</TargetFrameworks>
+        <RootNamespace>Pustalorc.Libraries.FrequencyCache</RootNamespace>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <PackageId>Pustalorc.FrequencyCache</PackageId>
+        <Authors>Pustalorc</Authors>
+        <Product>Pustalorc.FrequencyCache</Product>
+        <Description>A cache SDK that utilizes access frequency &amp; creation date to determine which previous items to replace within the cache.</Description>
+        <NeutralLanguage>en</NeutralLanguage>
+        <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
+        <RepositoryType>Github</RepositoryType>
+        <PackageProjectUrl>https://github.com/Pustalorc/FrequencyCache</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/Pustalorc/FrequencyCache</RepositoryUrl>
+        <PackageTags>cache frequency replacement access</PackageTags>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <Copyright>Copyright © 2020-2021 Pustalorc</Copyright>
+        <PackageReleaseNotes>Modifies the cache to support specific type caches with generics in mind. IIdentifiable can be used still as the cache type, which allows all types.</PackageReleaseNotes>
+        <Version>1.2.0</Version>
+        <LangVersion>latestmajor</LangVersion>
+        <Nullable>enable</Nullable>
+        <PackageVersion>1.2.0</PackageVersion>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+        <DocumentationFile>bin\Release\FrequencyCache.xml</DocumentationFile>
+        <NoWarn>1701;1702;</NoWarn>
+        <WarningsAsErrors>NU1605</WarningsAsErrors>
+        <DebugType>none</DebugType>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+    </ItemGroup>
+
+</Project>
