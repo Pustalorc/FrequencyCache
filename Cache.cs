@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
 using JetBrains.Annotations;
-using Pustalorc.Libraries.FrequencyCache.Defaults;
 using Pustalorc.Libraries.FrequencyCache.Interfaces;
 
 namespace Pustalorc.Libraries.FrequencyCache
@@ -34,7 +32,7 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// <summary>
         /// A timer used to periodically request an update to a cached item.
         /// </summary>
-        protected readonly Timer RequestUpdates;
+        protected readonly Timer? CacheRefreshingTimer;
 
         /// <summary>
         /// A delegate defining the method structure for when a cached item's update is requested.
@@ -58,9 +56,11 @@ namespace Pustalorc.Libraries.FrequencyCache
             CachedItemsIndexed = new Dictionary<T2, int>(configuration.CacheSize, equalityComparer);
             IndexToKey = new Dictionary<int, T2>(configuration.CacheSize);
 
-            RequestUpdates = new Timer(configuration.CacheRefreshRequestInterval);
-            RequestUpdates.Elapsed += RequestCacheRefresh;
-            RequestUpdates.Start();
+            if (!configuration.EnableCacheRefreshes) return;
+
+            CacheRefreshingTimer = new Timer(configuration.CacheRefreshRequestInterval);
+            CacheRefreshingTimer.Elapsed += RequestCacheRefresh;
+            CacheRefreshingTimer.Start();
         }
 
         /// <summary>
@@ -121,12 +121,21 @@ namespace Pustalorc.Libraries.FrequencyCache
         /// Restarts the internal timer with a new interval.
         /// </summary>
         /// <param name="rate">The new interval for the timer to tick at.</param>
+        /// <returns>A boolean to determine if changing the interval was successful.</returns>
+        /// <remarks>
+        /// This will always return false if the RequestUpdates property is null. Only way to make it return true is on
+        /// Instantiation by providing a configuration that enables cache refreshes.
+        /// </remarks>
         [UsedImplicitly]
-        public virtual void ModifyCacheRefreshInterval(double rate)
+        public virtual bool ModifyCacheRefreshInterval(double rate)
         {
-            RequestUpdates.Stop();
-            RequestUpdates.Interval = rate;
-            RequestUpdates.Start();
+            if (CacheRefreshingTimer == null)
+                return false;
+
+            CacheRefreshingTimer.Stop();
+            CacheRefreshingTimer.Interval = rate;
+            CacheRefreshingTimer.Start();
+            return true;
         }
 
         /// <summary>
@@ -147,7 +156,7 @@ namespace Pustalorc.Libraries.FrequencyCache
             return index;
         }
 
-        private void RequestCacheRefresh(object sender, ElapsedEventArgs e)
+        private void RequestCacheRefresh(object? sender, ElapsedEventArgs e)
         {
             foreach (var element in CachedItems.Where(element => element != null))
                 OnCachedItemUpdateRequested?.Invoke(element!);

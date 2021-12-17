@@ -1,13 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFrameworks>net40;net461;net48;net5.0;netstandard2.0;netstandard2.1</TargetFrameworks>
-        <RootNamespace>Pustalorc.Libraries.FrequencyCache</RootNamespace>
+        <TargetFrameworks>net461;net48;net5.0;net6.0;netstandard2.0;netstandard2.1</TargetFrameworks>
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+        <RootNamespace>Pustalorc.Libraries.FrequencyCache</RootNamespace>
         <PackageId>Pustalorc.FrequencyCache</PackageId>
-        <Authors>Pustalorc</Authors>
         <Product>Pustalorc.FrequencyCache</Product>
+        <Title>Frequency Accessing Cache</Title>
+        <Authors>Pustalorc</Authors>
         <Description>A cache SDK that utilizes access frequency &amp; creation date to determine which previous items to replace within the cache.</Description>
         <NeutralLanguage>en</NeutralLanguage>
         <AssemblyName>Pustalorc.FrequencyCache</AssemblyName>
@@ -16,23 +17,25 @@
         <RepositoryUrl>https://github.com/Pustalorc/FrequencyCache</RepositoryUrl>
         <PackageTags>cache frequency replacement access</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <Copyright>Copyright © 2020-2021 Pustalorc</Copyright>
-        <PackageReleaseNotes>Modifies the cache to support specific type caches with generics in mind. IIdentifiable can be used still as the cache type, which allows all types.</PackageReleaseNotes>
-        <Version>1.2.0</Version>
-        <LangVersion>latestmajor</LangVersion>
+        <Copyright>Copyright © 2020-2022 Pustalorc</Copyright>
+        <PackageReleaseNotes>Updated Jetbrains.Annotations
+Fixed nullability on an event.</PackageReleaseNotes>
+        <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
-        <PackageVersion>1.2.0</PackageVersion>
+        <Version>1.2.1</Version>
+        <PackageVersion>1.2.1</PackageVersion>
+        <AssemblyVersion>1.2.1</AssemblyVersion>
+        <FileVersion>1.2.1</FileVersion>
+        <InformationalVersion>1.2</InformationalVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
         <DocumentationFile>bin\Release\FrequencyCache.xml</DocumentationFile>
-        <NoWarn>1701;1702;</NoWarn>
-        <WarningsAsErrors>NU1605</WarningsAsErrors>
-        <DebugType>none</DebugType>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2021.2.0" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
     </ItemGroup>
 
 </Project>

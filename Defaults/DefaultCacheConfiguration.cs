@@ -11,6 +11,9 @@ namespace Pustalorc.Libraries.FrequencyCache.Defaults
     public class DefaultCacheConfiguration : ICacheConfiguration
     {
         /// <inheritdoc />
+        public bool EnableCacheRefreshes => true;
+
+        /// <inheritdoc />
         public virtual double CacheRefreshRequestInterval => 30000;
 
         /// <inheritdoc />

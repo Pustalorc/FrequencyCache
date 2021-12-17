@@ -6,6 +6,11 @@ namespace Pustalorc.Libraries.FrequencyCache.Interfaces
     public interface ICacheConfiguration
     {
         /// <summary>
+        /// Enables/Disables cache refreshing.
+        /// </summary>
+        public bool EnableCacheRefreshes { get; }
+
+        /// <summary>
         /// The interval between a complete cache refresh request.
         /// </summary>
         public double CacheRefreshRequestInterval { get; }
