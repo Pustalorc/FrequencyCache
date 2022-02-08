@@ -19,17 +19,19 @@ public class Cache<T1, T2> : IDisposable where T2 : class
     /// <summary>
     /// A fixed size array to store all the cached elements.
     /// </summary>
-    protected readonly AccessCounter<T1, T2>?[] CachedItems;
+    protected AccessCounter<T1, T2>?[] CachedItems { get; set; }
 
     /// <summary>
     /// A dictionary for fast lookup of already cached elements.
     /// </summary>
-    protected readonly Dictionary<T2, AccessCounter<T1, T2>> CachedItemsIndexed;
+    protected Dictionary<T2, AccessCounter<T1, T2>> CachedItemsIndexed { get; set; }
 
     /// <summary>
     /// A timer used to periodically request an update to a cached item.
     /// </summary>
-    protected readonly Timer? CacheRefreshingTimer;
+    protected Timer? CacheRefreshingTimer { get; set; }
+
+    protected IEqualityComparer<T2> EqualityComparer { get; }
 
     /// <summary>
     /// A delegate defining the method structure for when a cached item's update is requested.
@@ -49,6 +51,7 @@ public class Cache<T1, T2> : IDisposable where T2 : class
     /// <param name="equalityComparer">The equality comparer for the keys in the internal indexed dictionary.</param>
     public Cache(ICacheConfiguration configuration, IEqualityComparer<T2> equalityComparer)
     {
+        EqualityComparer = equalityComparer;
         CachedItems = new AccessCounter<T1, T2>?[configuration.CacheSize];
         CachedItemsIndexed = new Dictionary<T2, AccessCounter<T1, T2>>(configuration.CacheSize, equalityComparer);
 
@@ -59,15 +62,51 @@ public class Cache<T1, T2> : IDisposable where T2 : class
         CacheRefreshingTimer.Start();
     }
 
+    /// <summary>
+    /// Reloads the cache with a new configuration file.
+    /// </summary>
+    /// <param name="configuration">The new configuration file to use to reload the cache.</param>
+    /// <remarks>
+    /// This will reset the cached items to a new array, and the same for the indexed dictionary.
+    /// Timer will also be updated as necessary (removed if disabled, created if enabled but was disabled before, and updated if enabled and was enabled before).
+    /// </remarks>
+    [UsedImplicitly]
+    public virtual void ReloadConfiguration(ICacheConfiguration configuration)
+    {
+        CachedItems = new AccessCounter<T1, T2>?[configuration.CacheSize];
+        CachedItemsIndexed = new Dictionary<T2, AccessCounter<T1, T2>>(configuration.CacheSize, EqualityComparer);
+
+        if (!configuration.EnableCacheRefreshes)
+        {
+            CacheRefreshingTimer?.Stop();
+            CacheRefreshingTimer?.Dispose();
+            CacheRefreshingTimer = null;
+            return;
+        }
+
+        if (CacheRefreshingTimer == null)
+        {
+            CacheRefreshingTimer = new Timer(configuration.CacheRefreshRequestInterval);
+            CacheRefreshingTimer.Elapsed += RequestCacheRefresh;
+            CacheRefreshingTimer.Start();
+        }
+        else
+        {
+            CacheRefreshingTimer.Stop();
+            CacheRefreshingTimer.Interval = configuration.CacheRefreshRequestInterval;
+            CacheRefreshingTimer.Start();
+        }
+    }
+
     /// <inheritdoc />
-    public void Dispose()
+    public virtual void Dispose()
     {
         CacheRefreshingTimer?.Stop();
         CacheRefreshingTimer?.Dispose();
     }
 
     /// <summary>
-    /// Gets an item from cache based on a key input.
+    /// Gets an item from cache based on its specified key.
     /// </summary>
     /// <param name="key">The key to use as search to get the item in cache.</param>
     /// <returns>
@@ -83,13 +122,16 @@ public class Cache<T1, T2> : IDisposable where T2 : class
     }
 
     /// <summary>
-    /// Stores or updates an item into cache based on a key.
+    /// Stores or updates an item into/in cache based on its specified key.
     /// </summary>
     /// <param name="key">The key to use to search or store the item into cache.</param>
     /// <param name="item">The item to store in cache.</param>
     /// <returns>
-    /// An instance of <see cref="AccessCounter{T1,T2}"/>, containing the item that is cached.
+    /// An instance of <see cref="AccessCounter{T1,T2}"/>, containing the item that is cached with its key.
     /// </returns>
+    /// <remarks>
+    /// Despite the fact that the key should technically be fully unique per item, this is not a restriction here that is imposed.
+    /// </remarks>
     [UsedImplicitly]
     public virtual AccessCounter<T1, T2> StoreUpdateItem(T2 key, T1 item)
     {
@@ -114,30 +156,11 @@ public class Cache<T1, T2> : IDisposable where T2 : class
     }
 
     /// <summary>
-    /// Restarts the internal timer with a new interval.
+    /// Retrieves the best possible index for a new element to be added to cache.
     /// </summary>
-    /// <param name="rate">The new interval for the timer to tick at.</param>
-    /// <returns>A boolean to determine if changing the interval was successful.</returns>
-    /// <remarks>
-    /// This will always return false if the RequestUpdates property is null. Only way to make it return true is on
-    /// Instantiation by providing a configuration that enables cache refreshes.
-    /// </remarks>
-    [UsedImplicitly]
-    public virtual bool ModifyCacheRefreshInterval(double rate)
-    {
-        if (CacheRefreshingTimer == null)
-            return false;
-
-        CacheRefreshingTimer.Stop();
-        CacheRefreshingTimer.Interval = rate;
-        CacheRefreshingTimer.Start();
-        return true;
-    }
-
-    /// <summary>
-    /// Gets the best index for a new item to be cached at.
-    /// </summary>
-    /// <returns></returns>
+    /// <returns>
+    /// An integer, which is the index on the internal array to use for the new element.
+    /// </returns>
     protected virtual int GetBestCacheIndex()
     {
         var cacheList = CachedItems.ToList();
