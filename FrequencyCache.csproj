@@ -18,14 +18,17 @@
         <PackageTags>cache frequency replacement access</PackageTags>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <Copyright>Copyright © 2020-2022 Pustalorc</Copyright>
-        <PackageReleaseNotes>Updated Jetbrains.Annotations
-Fixed nullability on an event.</PackageReleaseNotes>
+        <PackageReleaseNotes>Optimized incorrect use of double dictionaries internally.
+            Added IDisposable to the Cache class as to dispose the internal timer.
+            Switched to unix timestamps instead of pure DateTime structs.
+            Weight property is now virtual.
+        </PackageReleaseNotes>
         <LangVersion>10</LangVersion>
         <Nullable>enable</Nullable>
         <Version>1.2.1</Version>
-        <PackageVersion>1.2.1</PackageVersion>
-        <AssemblyVersion>1.2.1</AssemblyVersion>
-        <FileVersion>1.2.1</FileVersion>
+        <PackageVersion>1.2.2</PackageVersion>
+        <AssemblyVersion>1.2.2</AssemblyVersion>
+        <FileVersion>1.2.2</FileVersion>
         <InformationalVersion>1.2</InformationalVersion>
     </PropertyGroup>
 
@@ -34,8 +37,8 @@ Fixed nullability on an event.</PackageReleaseNotes>
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0" />
-        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1" />
+        <PackageReference Include="JetBrains.Annotations" Version="2021.3.0"/>
+        <PackageReference Include="Microsoft.NETCore.Platforms" Version="6.0.1"/>
     </ItemGroup>
 
 </Project>
