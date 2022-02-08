@@ -31,6 +31,9 @@ public class Cache<T1, T2> : IDisposable where T2 : class
     /// </summary>
     protected Timer? CacheRefreshingTimer { get; set; }
 
+    /// <summary>
+    /// The equality comparer used in the underlying dictionary. Stored here as readonly for config reloads.
+    /// </summary>
     protected IEqualityComparer<T2> EqualityComparer { get; }
 
     /// <summary>
